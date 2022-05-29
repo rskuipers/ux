@@ -11,6 +11,7 @@
 
 namespace App;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\ORM\EntityManagerInterface;
@@ -121,6 +122,8 @@ class Kernel extends BaseKernel
         $routes->add('form', '/form')->controller('kernel::form');
         $routes->add('chat', '/chat')->controller('kernel::chat');
         $routes->add('books', '/books')->controller('kernel::books');
+        $routes->add('authors', '/authors')->controller('kernel::authors');
+        $routes->add('author', '/authors/{id}')->controller('kernel::author');
     }
 
     public function getProjectDir(): string
@@ -174,6 +177,10 @@ class Kernel extends BaseKernel
             }
             if ($title = $request->get('title')) {
                 $book->title = $title;
+                $authorId = $request->get('authorId');
+                if ($authorId > 0) {
+                    $book->author = $doctrine->find(Author::class, $authorId);
+                }
             }
             if ($remove = $request->get('remove')) {
                 $doctrine->remove($book);
@@ -185,5 +192,41 @@ class Kernel extends BaseKernel
         }
 
         return new Response($twig->render('books.html.twig'));
+    }
+
+    public function authors(Request $request, EntityManagerInterface $doctrine, Environment $twig): Response
+    {
+        if ($request->isMethod('POST')) {
+            if ($id = $request->get('id')) {
+                if (!($author = $doctrine->find(Author::class, $id))) {
+                    throw new NotFoundHttpException();
+                }
+            } else {
+                $author = new Author();
+            }
+            if ($name = $request->get('name')) {
+                $author->name = $name;
+            }
+            if ($remove = $request->get('remove')) {
+                $doctrine->remove($author);
+            } else {
+                $doctrine->persist($author);
+            }
+
+            $doctrine->flush();
+        }
+
+        return new Response($twig->render('authors.html.twig'));
+    }
+
+    public function author(Request $request, EntityManagerInterface $doctrine, Environment $twig): Response
+    {
+        $id = $request->get('id');
+
+        if (!($author = $doctrine->find(Author::class, $id))) {
+            throw new NotFoundHttpException();
+        }
+
+        return new Response($twig->render('author.html.twig', ['author' => $author]));
     }
 }

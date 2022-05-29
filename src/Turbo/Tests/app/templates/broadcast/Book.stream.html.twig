@@ -1,7 +1,7 @@
 {% block create %}
     <turbo-stream action="append" target="books">
         <template>
-            <div id="{{ 'book_' ~ id }}">{{ entity.title }} (#{{ id }})</div>
+            <div id="{{ 'book_' ~ id }}">{{ entity.title }} (#{{ id }}){% if entity.author %} by {{ entity.author.name }} (#{{ entity.author.id }}){% endif %}</div>
         </template>
     </turbo-stream>
 {% endblock %}

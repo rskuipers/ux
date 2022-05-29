@@ -11,6 +11,7 @@
 
 namespace Symfony\UX\Turbo\Bridge\Mercure;
 
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\UX\Turbo\Attribute\Broadcast;
@@ -70,6 +71,15 @@ final class Broadcaster implements BroadcasterInterface
         }
 
         $options['topics'] = (array) ($options['topics'] ?? sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass), rawurlencode(implode('-', (array) $options['id']))));
+
+        if (isset($options['scope'])) {
+            $expressionLanguage = new ExpressionLanguage();
+            $scope = $expressionLanguage->evaluate($options['scope'], [
+                'entity' => $entity
+            ]);
+
+            $options['topics'][] = sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass . '_' . $scope), rawurlencode(implode('-', (array) $options['id'])));
+        }
 
         $update = new Update(
             $options['topics'],

@@ -16,11 +16,11 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 
 /**
  * @ORM\Entity
- * @Broadcast
+ * @Broadcast(scope="entity.author?.id")
  *
  * @author Kévin Dunglas <kevin@dunglas.fr>
  */
-#[Broadcast]
+#[Broadcast(scope: 'entity.author?.id')]
 class Book
 {
     /**
@@ -38,4 +38,9 @@ class Book
      * @var string
      */
     public $title = '';
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="books")
+     */
+    public $author;
 }

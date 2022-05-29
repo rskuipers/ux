@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Author</h1>
+
+    {{ author.name }} (#{{ author.id }})
+
+    <h2>Books</h2>
+    <div id="books" {{ turbo_stream_listen('App\\Entity\\Book', null, author.id) }}></div>
+
+{% endblock %}
