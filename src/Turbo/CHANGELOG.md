@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2
+
+- `ScopedTurboStreamListenRendererInterface` has been added and is implemented by `TurboStreamListenRenderer` to support scoped topics.
+
 ## 2.1
 
 -   `TurboStreamResponse` and `AddTurboStreamFormatSubscriber` have been removed, use native content negotiation instead:
