@@ -46,6 +46,9 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
         return $this->render($env, $topic, $scope);
     }
 
+    /**
+     * @param string|object $topic
+     */
     private function render(Environment $env, $topic, ?string $scope): string
     {
         if (\is_object($topic)) {

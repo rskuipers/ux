@@ -41,6 +41,8 @@ class Author
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Book", mappedBy="author")
+     *
+     * @var Book[]
      */
     public $books;
 }

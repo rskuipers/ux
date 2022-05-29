@@ -41,6 +41,8 @@ class Book
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Author", inversedBy="books")
+     *
+     * @var Author|null
      */
     public $author;
 }
