@@ -37,6 +37,7 @@ class BroadcastTest extends PantherTestCase
         ($client = self::createPantherClient())->request('GET', '/books');
 
         $crawler = $client->submitForm('Submit', ['title' => self::BOOK_TITLE]);
+        $client->waitForElementToContain('#books div', self::BOOK_TITLE);
 
         $this->assertSelectorWillContain('#books', self::BOOK_TITLE);
         if (!preg_match('/\(#(\d+)\)/', $crawler->filter('#books div')->text(), $matches)) {
