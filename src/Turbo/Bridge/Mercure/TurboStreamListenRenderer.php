@@ -55,10 +55,10 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
                 throw new \LogicException(sprintf('Cannot listen to entity of class "%s" as the PropertyAccess component is not installed. Try running "composer require symfony/property-access".', $class));
             }
 
-            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($class . (\is_string($scope) ? '_' . $scope : '')), rawurlencode(implode('-', $id)));
+            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($class.(\is_string($scope) ? '_'.$scope : '')), rawurlencode(implode('-', $id)));
         } elseif (!preg_match('/[^a-zA-Z0-9_\x7f-\xff\\\\]/', $topic) && class_exists($topic)) {
             // Generate a URI template to subscribe to updates for all objects of this class
-            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($topic . (\is_string($scope) ? '_' . $scope : '')), '{id}');
+            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($topic.(\is_string($scope) ? '_'.$scope : '')), '{id}');
         }
 
         return $this->stimulusTwigExtension->renderStimulusController(

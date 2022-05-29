@@ -69,8 +69,8 @@ class BroadcastTest extends PantherTestCase
         $author1Id = $matches[1][0];
         $author2Id = $matches[1][1];
 
-        ($clientAuthor1 = self::createAdditionalPantherClient())->request('GET', '/authors/' . $author1Id);
-        ($clientAuthor2 = self::createAdditionalPantherClient())->request('GET', '/authors/' . $author2Id);
+        ($clientAuthor1 = self::createAdditionalPantherClient())->request('GET', '/authors/'.$author1Id);
+        ($clientAuthor2 = self::createAdditionalPantherClient())->request('GET', '/authors/'.$author2Id);
 
         $client->request('GET', '/books');
 

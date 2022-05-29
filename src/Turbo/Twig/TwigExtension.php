@@ -39,7 +39,7 @@ final class TwigExtension extends AbstractExtension
 
     /**
      * @param object|string $topic
-     * @param mixed|null $scope
+     * @param mixed|null    $scope
      */
     public function turboStreamListen(Environment $env, $topic, ?string $transport = null, $scope = null): string
     {

@@ -75,10 +75,10 @@ final class Broadcaster implements BroadcasterInterface
         if (isset($options['scope'])) {
             $expressionLanguage = new ExpressionLanguage();
             $scope = $expressionLanguage->evaluate($options['scope'], [
-                'entity' => $entity
+                'entity' => $entity,
             ]);
 
-            $options['topics'][] = sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass . '_' . $scope), rawurlencode(implode('-', (array) $options['id'])));
+            $options['topics'][] = sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass.'_'.$scope), rawurlencode(implode('-', (array) $options['id'])));
         }
 
         $update = new Update(
