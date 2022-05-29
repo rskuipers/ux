@@ -49,10 +49,16 @@ final class TwigExtension extends AbstractExtension
             throw new \InvalidArgumentException(sprintf('The Turbo stream transport "%s" doesn\'t exist.', $transport));
         }
 
-        return $this->turboStreamListenRenderers->get($transport)->renderTurboStreamListen(
-            $env,
-            $topic,
-            isset($scope) ? (string)$scope : null
-        );
+        $turboStreamListenRenderer = $this->turboStreamListenRenderers->get($transport);
+
+        if (isset($scope)) {
+            if (!$turboStreamListenRenderer instanceof ScopedTurboStreamListenRendererInterface) {
+                throw new \InvalidArgumentException(sprintf('The Turbo stream transport "%s" does not support scope.', $transport));
+            }
+
+            return $turboStreamListenRenderer->renderScopedTurboStreamListen($env, $topic, $scope);
+        }
+
+        return $turboStreamListenRenderer->renderTurboStreamListen($env, $topic);
     }
 }

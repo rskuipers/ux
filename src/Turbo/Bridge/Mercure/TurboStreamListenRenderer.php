@@ -13,6 +13,7 @@ namespace Symfony\UX\Turbo\Bridge\Mercure;
 
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\UX\Turbo\Broadcaster\IdAccessor;
+use Symfony\UX\Turbo\Twig\ScopedTurboStreamListenRendererInterface;
 use Symfony\UX\Turbo\Twig\TurboStreamListenRendererInterface;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
@@ -22,7 +23,7 @@ use Twig\Environment;
  *
  * @author Kévin Dunglas <kevin@dunglas.fr>
  */
-final class TurboStreamListenRenderer implements TurboStreamListenRendererInterface
+final class TurboStreamListenRenderer implements TurboStreamListenRendererInterface, ScopedTurboStreamListenRendererInterface
 {
     private $hub;
     private $stimulusTwigExtension;
@@ -35,7 +36,17 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
         $this->idAccessor = $idAccessor;
     }
 
-    public function renderTurboStreamListen(Environment $env, $topic, ?string $scope = null): string
+    public function renderTurboStreamListen(Environment $env, $topic): string
+    {
+        return $this->render($env, $topic, null);
+    }
+
+    public function renderScopedTurboStreamListen(Environment $env, $topic, string $scope): string
+    {
+        return $this->render($env, $topic, $scope);
+    }
+
+    private function render(Environment $env, $topic, ?string $scope): string
     {
         if (\is_object($topic)) {
             $class = \get_class($topic);

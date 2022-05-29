@@ -14,14 +14,14 @@ namespace Symfony\UX\Turbo\Twig;
 use Twig\Environment;
 
 /**
- * Render turbo stream attributes.
+ * Render turbo stream attributes for a scoped topic.
  *
- * @author Kévin Dunglas <kevin@dunglas.fr>
+ * @author Rick Kuipers <rick@levelup-it.com>
  */
-interface TurboStreamListenRendererInterface
+interface ScopedTurboStreamListenRendererInterface
 {
     /**
      * @param string|object $topic
      */
-    public function renderTurboStreamListen(Environment $env, $topic): string;
+    public function renderScopedTurboStreamListen(Environment $env, $topic, string $scope): string;
 }
