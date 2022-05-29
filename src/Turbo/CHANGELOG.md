@@ -2,7 +2,7 @@
 
 ## 2.2
 
-- `ScopedTurboStreamListenRendererInterface` has been added and is implemented by `TurboStreamListenRenderer` to support scoped topics.
+-   `ScopedTurboStreamListenRendererInterface` has been added and is implemented by `TurboStreamListenRenderer` to support scoped topics.
 
 ## 2.1
 
