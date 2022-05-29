@@ -22,7 +22,6 @@ interface TurboStreamListenRendererInterface
 {
     /**
      * @param string|object $topic
-     * @param string|null $scope
      */
     public function renderTurboStreamListen(Environment $env, $topic, ?string $scope = null): string;
 }
