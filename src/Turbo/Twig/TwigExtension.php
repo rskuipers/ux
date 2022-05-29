@@ -56,7 +56,7 @@ final class TwigExtension extends AbstractExtension
                 throw new \InvalidArgumentException(sprintf('The Turbo stream transport "%s" does not support scope.', $transport));
             }
 
-            return $turboStreamListenRenderer->renderScopedTurboStreamListen($env, $topic, $scope);
+            return $turboStreamListenRenderer->renderScopedTurboStreamListen($env, $topic, (string) $scope);
         }
 
         return $turboStreamListenRenderer->renderTurboStreamListen($env, $topic);
