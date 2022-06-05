@@ -51,7 +51,7 @@ class BroadcastTest extends PantherTestCase
         $this->assertSelectorWillNotContain('#books', $matches[1]);
     }
 
-    public function testScopedBroadcast(): void
+    public function testExpressionLanguageBroadcast(): void
     {
         ($client = self::createPantherClient())->request('GET', '/authors');
 

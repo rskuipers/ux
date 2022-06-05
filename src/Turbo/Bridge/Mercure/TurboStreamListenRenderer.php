@@ -13,7 +13,6 @@ namespace Symfony\UX\Turbo\Bridge\Mercure;
 
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\UX\Turbo\Broadcaster\IdAccessor;
-use Symfony\UX\Turbo\Twig\ScopedTurboStreamListenRendererInterface;
 use Symfony\UX\Turbo\Twig\TurboStreamListenRendererInterface;
 use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
@@ -23,7 +22,7 @@ use Twig\Environment;
  *
  * @author Kévin Dunglas <kevin@dunglas.fr>
  */
-final class TurboStreamListenRenderer implements TurboStreamListenRendererInterface, ScopedTurboStreamListenRendererInterface
+final class TurboStreamListenRenderer implements TurboStreamListenRendererInterface
 {
     private $hub;
     private $stimulusTwigExtension;
@@ -38,19 +37,6 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
 
     public function renderTurboStreamListen(Environment $env, $topic): string
     {
-        return $this->render($env, $topic, null);
-    }
-
-    public function renderScopedTurboStreamListen(Environment $env, $topic, string $scope): string
-    {
-        return $this->render($env, $topic, $scope);
-    }
-
-    /**
-     * @param string|object $topic
-     */
-    private function render(Environment $env, $topic, ?string $scope): string
-    {
         if (\is_object($topic)) {
             $class = \get_class($topic);
 
@@ -58,10 +44,10 @@ final class TurboStreamListenRenderer implements TurboStreamListenRendererInterf
                 throw new \LogicException(sprintf('Cannot listen to entity of class "%s" as the PropertyAccess component is not installed. Try running "composer require symfony/property-access".', $class));
             }
 
-            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($class.(\is_string($scope) ? '_'.$scope : '')), rawurlencode(implode('-', $id)));
+            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($class), rawurlencode(implode('-', $id)));
         } elseif (!preg_match('/[^a-zA-Z0-9_\x7f-\xff\\\\]/', $topic) && class_exists($topic)) {
             // Generate a URI template to subscribe to updates for all objects of this class
-            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($topic.(\is_string($scope) ? '_'.$scope : '')), '{id}');
+            $topic = sprintf(Broadcaster::TOPIC_PATTERN, rawurlencode($topic), '{id}');
         }
 
         return $this->stimulusTwigExtension->renderStimulusController(

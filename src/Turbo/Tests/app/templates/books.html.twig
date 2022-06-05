@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Books</h1>
 
-    <div id="books" {{ turbo_stream_listen('App\\Entity\\Book') }}></div>
+    <div id="books" {{ turbo_stream_listen('books') }}></div>
 
     <turbo-frame id="api">
         <form method="post" enctype="application/x-www-form-urlencoded">

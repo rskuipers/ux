@@ -44,11 +44,13 @@ final class Broadcaster implements BroadcasterInterface
 
     private $name;
     private $hub;
+    private $expressionLanguage;
 
     public function __construct(string $name, HubInterface $hub)
     {
         $this->name = $name;
         $this->hub = $hub;
+        $this->expressionLanguage = new ExpressionLanguage();
     }
 
     /**
@@ -70,15 +72,26 @@ final class Broadcaster implements BroadcasterInterface
             throw new \InvalidArgumentException(sprintf('Cannot broadcast entity of class "%s": either option "topics" or "id" is missing, or the PropertyAccess component is not installed. Try running "composer require property-access".', $entityClass));
         }
 
-        $options['topics'] = (array) ($options['topics'] ?? sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass), rawurlencode(implode('-', (array) $options['id']))));
+        $topics = [];
 
-        if (isset($options['scope'])) {
-            $expressionLanguage = new ExpressionLanguage();
-            $scope = $expressionLanguage->evaluate($options['scope'], [
-                'entity' => $entity,
-            ]);
+        foreach ((array) ($options['topics'] ?? []) as $topic) {
+            if (!\is_string($topic)) {
+                $topics[] = $topic;
+                continue;
+            }
 
-            $options['topics'][] = sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass.'_'.$scope), rawurlencode(implode('-', (array) $options['id'])));
+            if (0 !== strpos($topic, '@=')) {
+                $topics[] = $topic;
+                continue;
+            }
+
+            $topics[] = $this->expressionLanguage->evaluate(substr($topic, 2), ['object' => $entity]);
+        }
+
+        $options['topics'] = $topics;
+
+        if (0 === \count($options['topics'])) {
+            $options['topics'] = (array) sprintf(self::TOPIC_PATTERN, rawurlencode($entityClass), rawurlencode(implode('-', (array) $options['id'])));
         }
 
         $update = new Update(

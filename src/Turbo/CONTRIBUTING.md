@@ -26,7 +26,7 @@ Start the test app:
 -   `http://localhost:8000`: basic features
 -   `http://localhost:8000/chat`: chat using Turbo Streams
 -   `http://localhost:8000/books`: broadcast
--   `http://localhost:8000/authors`: broadcast (scoped)
+-   `http://localhost:8000/authors`: broadcast
 
 ## Run tests
 

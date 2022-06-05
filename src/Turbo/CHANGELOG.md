@@ -2,7 +2,7 @@
 
 ## 2.2
 
--   `ScopedTurboStreamListenRendererInterface` has been added and is implemented by `TurboStreamListenRenderer` to support scoped topics.
+-   The topics defined in the Broadcast attribute now support expression language when prefixed with `@=`.
 
 ## 2.1
 

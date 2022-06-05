@@ -16,11 +16,11 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 
 /**
  * @ORM\Entity
- * @Broadcast(scope="entity.author ? entity.author.id : null")
+ * @Broadcast(topics={"@='book_by_author_' ~ (object.author ? object.author.id : null)", "books"})
  *
  * @author Kévin Dunglas <kevin@dunglas.fr>
  */
-#[Broadcast(scope: 'entity.author ? entity.author.id : null')]
+#[Broadcast(topics: ['@="book_by_author_" ~ (object.author ? object.author.id : null)', 'books'])]
 class Book
 {
     /**
