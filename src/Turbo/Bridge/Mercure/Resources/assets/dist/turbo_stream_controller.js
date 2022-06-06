@@ -15,7 +15,9 @@ class default_1 extends Controller {
         this.url = u.toString();
     }
     connect() {
-        this.es = new EventSource(this.url);
+        this.es = new EventSource(this.url, {
+            withCredentials: true
+        });
         connectStreamSource(this.es);
     }
     disconnect() {

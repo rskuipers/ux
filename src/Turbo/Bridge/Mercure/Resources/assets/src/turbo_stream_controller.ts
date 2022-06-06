@@ -33,7 +33,9 @@ export default class extends Controller {
     }
 
     connect() {
-        this.es = new EventSource(this.url);
+        this.es = new EventSource(this.url, {
+            withCredentials: true
+        });
         connectStreamSource(this.es);
     }
 
